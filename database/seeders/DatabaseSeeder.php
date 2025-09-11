@@ -20,12 +20,12 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@example.com',
         ]);
 
-        // $categories = ['Technology', 'Health', 'Travel', 'Food', 'Lifestyle'];
-        // foreach ($categories as $category) {
-        //     Category::create(['name' => $category]);
-        // }
+        $categories = ['Technology', 'Health', 'Travel', 'Food', 'Lifestyle'];
+        foreach ($categories as $category) {
+            Category::create(['name' => $category]);
+        }
 
-        // // Create posts
-        // Post::factory(10)->create();
+        // Create posts
+        //Post::factory(100)->create();
     }
 }

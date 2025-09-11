@@ -10,6 +10,13 @@
                     </a>
                 </div>
             </div>
+        <div class="flex">
+            <!-- Navigation Links -->
+            <a href="{{route('post.create')}}" class="flex items-center">
+                <x-primary-button>
+                    Create Post
+                </x-primary-button>
+            </a>
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
@@ -54,6 +61,8 @@
                     </svg>
                 </button>
             </div>
+        </div>
+
         </div>
     </div>
 
