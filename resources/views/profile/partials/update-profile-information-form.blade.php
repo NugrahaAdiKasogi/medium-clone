@@ -17,9 +17,9 @@
         @csrf
         @method('patch')
 
-        @if ($user->image)
-            <div class="mb-4 flex items-center justify-center">
-                <x-user-avatar :user="$user" size="w-24 h-24" />
+        @if ($user->getFirstMedia('avatar'))
+            <div class="mb-4">
+                <img class="h-32 w-32 rounded-full object-cover" src="{{ $user->imageUrl() }}" alt="User Avatar">
             </div>
         @endif
         
@@ -50,7 +50,7 @@
             <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
 
-            @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
+            @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && !$user->hasVerifiedEmail())
             <div>
                 <p class="text-sm mt-2 text-gray-800">
                     {{ __('Your email address is unverified.') }}

@@ -34,7 +34,7 @@
             ]) 
     }}" >
         <img class="rounded-r-lg w-64 h-full  max-h-64 ms-6"
-            src="{{ Storage::url($post->image) }}"
+            src="{{ $post->imageUrl('preview') }}"
             alt="image" />
     </a>
 </div>

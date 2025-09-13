@@ -1,6 +1,6 @@
 @props(['post'])
 <div x-data="{
-        hasClapped: {{ auth()->user()->hasClapped($post) ? 'true' : 'false' }},
+        hasClapped: @json($post->user->isClappedBy(auth()->user())),
         count: {{ $post->claps()->count() }},
         clap(){
             axios.post('/clap/{{ $post->id }}')

@@ -8,6 +8,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use App\Models\User;
 
 
 class PostController extends Controller
@@ -17,8 +18,15 @@ class PostController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
+        $query = Post::latest();
 
-        $posts = Post::orderBy('created_at', 'DESC')->paginate(5);
+        if ($user) {
+            $ids = $user->following()->pluck("users.id");
+            $query->whereIn('user_id', $ids);
+        }
+
+        $posts = $query->paginate(5);
         return view("post.index", [
             'posts' => $posts
         ]);
@@ -40,16 +48,19 @@ class PostController extends Controller
     {
         $data = $request->validated();
 
-        $image = $data['image'];
-        unset($data['image']);
+        // $image = $data['image'];
+        // unset($data['image']);
         $data['user_id'] = Auth::id();    // Assuming you have user authentication
         $data['slug'] = Str::slug($data['title']);    // Assuming you have user authentication
-        $imagePath = $image -> store('posts', 'public');
-        $data['image'] = $imagePath;
+        
+        // $imagePath = $image->store('posts', 'public');
+        // $data['image'] = $imagePath;
 
-        Post::create($data);
+        $post = Post::create($data);
+        $post->addMediaFromRequest('image')
+            ->toMediaCollection();
+
         return redirect()->route('dashboard')->with('success', 'Post created successfully.');
-
     }
 
     /**

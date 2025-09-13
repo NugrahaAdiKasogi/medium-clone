@@ -55,12 +55,12 @@
             @endauth
 
             @guest
-            <a href="{{route('login')}}" class="flex items-center m-4 text-gray-400">
-                Login
-            </a>
-            <a href="{{route('register')}}" class="flex items-center text-gray-400">
-                Register
-            </a>
+                <a href="{{route('register')}}" class=" m-4 flex items-center text-gray-400">
+                    Create an Account
+                </a>
+                <a href="{{route('login')}}" class="flex items-center text-gray-400">
+                    Login
+                </a>
             @endguest
 
             <!-- Hamburger -->

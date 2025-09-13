@@ -13,6 +13,7 @@
                                 class="font-bold hover:underline">
                                 {{ $post->user->name }}
                             </a>
+                            @auth
                             <span class="text-sm text-gray-400">•</span>
                             <button
                                 x-text="following ? 'Unfollow' : 'Follow'"
@@ -20,6 +21,7 @@
                                 @click="follow()"
                             >
                             </button>
+                            @endauth
                         </x-follow-ctr>
                         <div class="flex items-center gap-2">
                             <p class="text-sm text-gray-400">{{ $post->readTime() }} min read</p>
