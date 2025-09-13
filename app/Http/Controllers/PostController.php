@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostCreateRequest;
 use App\Models\Post;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -35,15 +36,9 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PostCreateRequest $request)
     {
-        $data = $request->validate([
-            'title' => 'required',
-            'content' => 'required|string',
-            'image' => ['required','image', 'mimes:jpeg,png,jpg,svg', 'max:2048'], // Optional image upload
-            'category_id' => ['required','exists:categories,id'], // Optional category
-            'published_at' => ['nullable','datetime'],
-        ]);
+        $data = $request->validated();
 
         $image = $data['image'];
         unset($data['image']);
@@ -60,9 +55,9 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Post $post)
+    public function show(string $username, Post $post)
     {
-        //
+        return view('post.show', compact('post'));
     }
 
     /**
@@ -87,5 +82,13 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         //
+    }
+
+    public function category(Category $category)
+    {
+        $posts = Post::where('category_id', $category->id)->orderBy('created_at', 'DESC')->paginate(5);
+        return view("post.index", [
+            'posts' => $posts
+        ]);
     }
 }

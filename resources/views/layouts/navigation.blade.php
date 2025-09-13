@@ -18,6 +18,7 @@
                 </x-primary-button>
             </a>
 
+            @auth
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
@@ -51,6 +52,16 @@
                     </x-slot>
                 </x-dropdown>
             </div>
+            @endauth
+
+            @guest
+            <a href="{{route('login')}}" class="flex items-center m-4 text-gray-400">
+                Login
+            </a>
+            <a href="{{route('register')}}" class="flex items-center text-gray-400">
+                Register
+            </a>
+            @endguest
 
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
@@ -66,6 +77,7 @@
         </div>
     </div>
 
+    @auth
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <!-- Responsive Settings Options -->
@@ -93,4 +105,5 @@
             </div>
         </div>
     </div>
+    @endauth
 </nav>
