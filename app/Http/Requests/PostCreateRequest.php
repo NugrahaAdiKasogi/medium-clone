@@ -26,7 +26,7 @@ class PostCreateRequest extends FormRequest
             'content' => 'required|string',
             'image' => ['required', 'image', 'mimes:jpeg,png,jpg,svg', 'max:2048'], // Optional image upload
             'category_id' => ['required', 'exists:categories,id'], // Optional category
-            'published_at' => ['nullable', 'datetime'],
+            'published_at' => ['nullable', 'date'],
         ];
     }
 }

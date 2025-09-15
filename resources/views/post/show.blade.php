@@ -26,7 +26,7 @@
                         <div class="flex items-center gap-2">
                             <p class="text-sm text-gray-400">{{ $post->readTime() }} min read</p>
                             <span class="text-sm text-gray-400">•</span>
-                            <p class="text-sm text-gray-400">{{ $post->created_at->format('F j, Y') }}</p>
+                            <p class="text-sm text-gray-400">{{ $post->formatted_published_at }}</p>
 
                         </div>
                         {{-- Clap Section --}}
@@ -36,20 +36,31 @@
                     </div>
                 </div>
 
+                @if (Auth::id() === $post->user_id)
+                    <div class="mt-4 py-4 border-t border-gray-200 w-full flex gap-2">
+                        <x-primary-button href="{{route('post.edit', $post->slug)}}">
+                            Edit Post
+                        </x-primary-button>
+                        <form method="POST" action="{{route('post.destroy', $post)}}">
+                            @csrf
+                            @method('DELETE')
+                            <x-danger-button>
+                                Delete Post
+                            </x-danger-button>
+                        </form>
+                    </div>
+                @endif
                 {{-- Body --}}
                 <div class="mt-8">
                     <img src="{{ $post->imageUrl() }}" alt="{{ $post->title }}"
                         class="w-full h-full object-cover mt-4 rounded-lg">
-                    <div class="mt-4">
+                    <div class="mt-4 whitespace-pre-line text-justify">
                         {{ $post->content }}
                     </div>
                     <div class="mt-8">
                         <span class="px-4 py-2 bg-gray-200 rounded-full">
                             {{$post->category->name}}
                         </span>
-                    </div>
-                    <div class="mt-8">
-                        <x-clap-button :post="$post" />
                     </div>
                 </div>
             </div>

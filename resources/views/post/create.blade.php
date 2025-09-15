@@ -1,6 +1,7 @@
 <x-app-layout>
     <div class="py-4">
-        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 ">
+            <h1 class="text-3xl font-bold mb-4 text-center">Create Post</h1>
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-8">
                 <form action="{{ route('post.store') }}" method="post" enctype="multipart/form-data">
                     @csrf
@@ -40,6 +41,14 @@
                          </x-input-textarea>
                          <x-input-error :messages="$errors->get('content')" class="mt-2" />
                      </div>
+
+                    <!-- Published At -->
+                    <div class="mt-6">
+                        <x-input-label for="published_at" :value="__('Published At')" />
+                        <x-text-input id="published_at" class="block mt-1 w-full" type="datetime-local"
+                            name="published_at" :value="old('published_at')"  autofocus />
+                        <x-input-error :messages="$errors->get('published_at')" class="mt-2" />
+                    </div>
 
                      <x-primary-button class="mt-6">
                          Submit 

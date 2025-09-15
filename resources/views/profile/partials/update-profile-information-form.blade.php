@@ -17,7 +17,7 @@
         @csrf
         @method('patch')
 
-        @if ($user->getFirstMedia('avatar'))
+        @if ($user->imageUrl())
             <div class="mb-4">
                 <img class="h-32 w-32 rounded-full object-cover" src="{{ $user->imageUrl() }}" alt="User Avatar">
             </div>

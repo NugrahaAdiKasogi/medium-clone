@@ -14,7 +14,6 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Storage;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -67,7 +66,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     $this
         ->addMediaConversion('avatar')
         ->width(128)
-        ->crop(128,128);
+        ->height(128);
     }
 
     public function registerMediaCollections(): void
@@ -94,8 +93,15 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         return $this->belongsToMany(User::class, 'followers', 'user_id', 'follower_id');
     }
 
-    public function imageUrl($conversionName = ''){
-        return $this->getFirstMedia('avatar')?->getUrl($conversionName);
+    public function imageUrl(){
+        if(!$this->hasMedia('avatar')){
+            return asset('images/default-avatar.jpg');
+        }
+        $media = $this->getFirstMedia('avatar');
+        if($media->hasGeneratedConversion('avatar')){
+            return $media->getUrl('avatar');
+        }
+        return $media->getUrl();
     }
 
     public function isFollowedBy(?User $user): bool
@@ -115,19 +121,13 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
 
     public function claps()
     {
-        return $this->hasMany(Clap::class);
+        // 'claps' adalah nama pivot table-mu
+        return $this->belongsToMany(Post::class, 'claps');
     }
 
     public function hasClapped(Post $post)
     {
-        return $post->claps()->where('user_id', $this->id)->exists();
+            return $post->isClappedBy($this);
     }
 
-    public function isClappedBy(?User $user): bool
-    {
-        if (! $user) {
-            return false;
-        }
-        return $this->claps()->where('user_id', $user->id)->exists();
-    }
 }

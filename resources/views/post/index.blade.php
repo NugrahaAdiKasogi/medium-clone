@@ -3,11 +3,14 @@
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-4 text-gray-900">
-                    <x-category-tabs>
-                        <li class="me-2">
-                            <span class="inline-block px-4 py-2 text-gray-400">No categories found</span>
-                        </li>
-                    </x-category-tabs>
+                    {{-- post/index.blade.php --}}
+                    @if (Route::currentRouteName() === 'myPosts' || Route::currentRouteName() === 'myPosts.byCategory')
+                        {{-- Navbar khusus My Posts --}}
+                        <x-my-post-category-nav :categories="$categories" />
+                    @else
+                        {{-- Navbar khusus Dashboard (Following) --}}
+                        <x-category-tabs :categories="$categories" />
+                    @endif
                 </div>
             </div>
             <div class="text-gray-900 mt-8">
